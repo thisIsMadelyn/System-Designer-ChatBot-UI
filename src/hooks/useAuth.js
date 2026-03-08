@@ -4,23 +4,22 @@ import { useAuthStore } from "../store/authStore";
 import { loginUser, registerUser } from "../services/authService";
 
 export function useAuth() {
-    const { user, login, logout, restoreSession } = useAuthStore();
+    const { user, setAuth, logout, restoreSession } = useAuthStore();
     const navigate = useNavigate();
 
-    // Restore session on mount
     useEffect(() => {
         restoreSession();
     }, []);
 
     const handleLogin = async (email, password) => {
-        await loginUser(email, password); // throws on error
-        login(email, password);
+        const data = await loginUser(email, password);
+        setAuth({ id: data.user_id, name: data.name, email: data.email }, data.token);
         navigate("/projects");
     };
 
-    const handleRegister = async (name, email, password) => {
-        await registerUser(name, email, password);
-        login(email, password);
+    const handleRegister = async (name, username, email, password) => {
+        const data = await registerUser(name, username, email, password);
+        setAuth({ id: data.user_id, name: data.name, email: data.email }, data.token);
         navigate("/projects");
     };
 

@@ -38,7 +38,7 @@ export default function MarginNotes({ projectId }) {
 
     const [input,    setInput]    = useState("");
     const [category, setCategory] = useState("general");
-    const [showAll,  setShowAll]  = useState(true); // Default σε true για το Dashboard
+    const [showAll,  setShowAll]  = useState(true);
 
     const displayed = showAll ? notes : starred;
 
@@ -47,29 +47,27 @@ export default function MarginNotes({ projectId }) {
         addNote(projectId, input.trim(), category);
         setInput("");
     };
-
+    // className="bg-[#1a1425] rounded-3xl p-6 border border-white/10"
     return (
-        <aside className="w-64 bg-[#1a1425]/40 backdrop-blur-xl border-l border-white/5 flex flex-col overflow-hidden shadow-2xl">
+        /* Διόρθωση: Προσθήκη h-full και αφαίρεση περιττών περιθωρίων αν υπάρχουν */
+        <aside className="w-72 h-full bg-[#1a1425]/60 backdrop-blur-2xl border-l border-white/5 flex flex-col overflow-hidden shadow-2xl relative z-20">
             {/* Header */}
-            <div className="px-5 py-5 border-b border-white/5 bg-white/5">
+            <div className="px-6 py-6 border-b border-white/5 bg-white/5">
                 <div className="flex items-center justify-between mb-1">
                     <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Knowledge Base</h3>
-                    <div className="flex items-center gap-1.5 bg-[#bb29ff]/10 px-2 py-0.5 rounded-full border border-[#bb29ff]/20">
+                    <div className="flex items-center gap-1.5 bg-[#bb29ff]/20 px-2 py-0.5 rounded-full border border-[#bb29ff]/30 shadow-[0_0_10px_rgba(187,41,255,0.2)]">
                         <Star size={10} className="fill-[#bb29ff] text-[#bb29ff]" />
                         <span className="text-[10px] font-bold text-[#bb29ff]">{starred.length}</span>
                     </div>
                 </div>
-                <p className="text-[10px] text-gray-500 uppercase tracking-tighter">Persistent Project Insights</p>
             </div>
 
-            {/* Notes list */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 custom-scrollbar">
+            {/* Notes list - Το flex-1 θα το κάνει να πάρει όλο τον διαθέσιμο χώρο */}
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 custom-scrollbar">
                 {displayed.length === 0 && (
-                    <div className="text-center py-10 opacity-20">
-                        <StickyNote size={32} className="mx-auto mb-2" />
-                        <p className="text-[10px] font-bold uppercase tracking-widest">
-                            {showAll ? "No Entries" : "No Starred Items"}
-                        </p>
+                    <div className="text-center py-20 opacity-20">
+                        <StickyNote size={40} className="mx-auto mb-3" />
+                        <p className="text-[10px] font-bold uppercase tracking-widest">No entries logged</p>
                     </div>
                 )}
                 {displayed.map((note) => (
@@ -82,43 +80,60 @@ export default function MarginNotes({ projectId }) {
                 ))}
             </div>
 
-            {/* Toggle & Input Area */}
-            <div className="mt-auto bg-white/5 border-t border-white/5 p-4 space-y-3">
+            {/* Bottom Actions & Input */}
+            <div className="bg-black/20 border-t border-white/5 p-5 space-y-4">
                 {notes.length > 0 && (
                     <button
                         onClick={() => setShowAll((v) => !v)}
-                        className="w-full text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#bb29ff] transition-colors mb-1"
+                        className="w-full text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#bb29ff] transition-all py-1"
                     >
-                        {showAll ? "Filter Starred" : `Show All (${notes.length})`}
+                        {showAll ? "Filter Starred" : `View All (${notes.length})`}
                     </button>
                 )}
 
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full text-[10px] font-bold uppercase bg-[#0f0a1a] border border-white/10 rounded-xl px-3 py-2 text-gray-400 outline-none focus:border-[#bb29ff] cursor-pointer"
-                >
-                    <option value="general">General Note</option>
-                    <option value="architecture">🏛Architecture</option>
-                    <option value="constraint">⚠Constraint</option>
-                    <option value="recommendation">Recommendation</option>
-                </select>
+                <div className="mt-auto bg-[#1a1425]/80 border-t border-white/5 p-5 space-y-4">
+                    {/* Φίλτρο Starred */}
+                    {notes.length > 0 && (
+                        <button
+                            onClick={() => setShowAll((v) => !v)}
+                            className="w-full text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#bb29ff] transition-all py-1 mb-2"
+                        >
+                            {showAll ? "Filter Starred" : `View All (${notes.length})`}
+                        </button>
+                    )}
 
-                <div className="flex gap-2">
-                    <input
-                        className="flex-1 text-xs bg-[#0f0a1a] border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder:text-gray-600 outline-none focus:border-[#bb29ff]"
-                        placeholder="Log insight..."
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-                    />
-                    <button
-                        onClick={handleAdd}
-                        disabled={!input.trim()}
-                        className="w-10 h-10 bg-[#bb29ff] rounded-xl text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-30 shadow-[0_0_15px_rgba(187,41,255,0.2)]"
-                    >
-                        <Plus size={18} />
-                    </button>
+                    <div className="space-y-3">
+                        {/* Dropdown - Σκούρο background, Λευκά γράμματα */}
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="w-full text-[10px] font-bold uppercase bg-[#0f0a1a] text-white border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#bb29ff] cursor-pointer appearance-none shadow-inner"
+                        >
+                            <option value="general" className="bg-[#0f0a1a]">General Note</option>
+                            <option value="architecture" className="bg-[#0f0a1a]">Architecture</option>
+                            <option value="constraint" className="bg-[#0f0a1a]">Constraint</option>
+                            <option value="recommendation" className="bg-[#0f0a1a]">Recommendation</option>
+                        </select>
+
+                        <div className="flex gap-2">
+                            {/* Input - Σκούρο background, Λευκά γράμματα */}
+                            <input
+                                className="flex-1 text-sm bg-[#0f0a1a] text-white border border-white/10 rounded-xl px-4 py-3 placeholder:text-gray-600 outline-none focus:border-[#bb29ff] focus:ring-1 focus:ring-[#bb29ff]/30 transition-all shadow-inner"
+                                placeholder="Type insight..."
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+                            />
+                            {/* Κουμπί Προσθήκης */}
+                            <button
+                                onClick={handleAdd}
+                                disabled={!input.trim()}
+                                className="w-12 h-12 bg-[#bb29ff] text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-30 shadow-[0_0_20px_rgba(187,41,255,0.4)]"
+                            >
+                                <Plus size={20} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>

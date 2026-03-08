@@ -75,7 +75,6 @@ export default function ProjectDashboard() {
                             <Cpu size={18} />
                             <h2 className="text-xs font-bold uppercase tracking-widest">Input Parameters</h2>
                         </div>
-                        <p className="text-[10px] text-gray-500 uppercase tracking-tighter">Configure AI Generation</p>
                     </div>
                     <div className="flex-1 overflow-y-auto px-5 py-6 custom-scrollbar">
                         <DesignForm onSubmit={handleDesignSubmit} loading={loading} />

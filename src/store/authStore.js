@@ -1,31 +1,26 @@
 import { create } from "zustand";
 
-// ── Mock user for development ──────────────────────────────────
-const MOCK_USER = {
-    id: "user-001",
-    name: "Alex Developer",
-    email: "alex@devco.io",
-    avatar: "AD",
-};
-
 export const useAuthStore = create((set) => ({
-    user: null,   // null = not logged in
+    user:  null,
+    token: null,
 
-    // Mock login — accepts any email/password combo
-    login: (email, _password) => {
-        const user = { ...MOCK_USER, email };
-        localStorage.setItem("sda_user", JSON.stringify(user));
-        set({ user });
+    setAuth: (user, token) => {
+        localStorage.setItem("sda_token", token);
+        localStorage.setItem("sda_user",  JSON.stringify(user));
+        set({ user, token });
     },
 
-    // Restore session on page reload
     restoreSession: () => {
-        const saved = localStorage.getItem("sda_user");
-        if (saved) set({ user: JSON.parse(saved) });
+        const token = localStorage.getItem("sda_token");
+        const raw   = localStorage.getItem("sda_user");
+        if (token && raw) {
+            set({ token, user: JSON.parse(raw) });
+        }
     },
 
     logout: () => {
+        localStorage.removeItem("sda_token");
         localStorage.removeItem("sda_user");
-        set({ user: null });
+        set({ user: null, token: null });
     },
 }));

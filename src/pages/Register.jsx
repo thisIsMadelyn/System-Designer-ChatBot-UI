@@ -7,6 +7,7 @@ import { Cpu } from "lucide-react";
 export default function Register() {
     const { handleRegister } = useAuth();
     const [name,     setName]     = useState("");
+    const [username, setUsername] = useState("");
     const [email,    setEmail]    = useState("");
     const [password, setPassword] = useState("");
     const [error,    setError]    = useState("");
@@ -17,9 +18,9 @@ export default function Register() {
         setError("");
         setLoading(true);
         try {
-            await handleRegister(name, email, password);
-        } catch (e) {
-            setError(e.message);
+            await handleRegister(name, username, email, password);
+        } catch (err) {
+            setError(err.message || "Registration failed");
         } finally {
             setLoading(false);
         }
@@ -27,40 +28,44 @@ export default function Register() {
 
     return (
         <div className="relative min-h-screen bg-[#0f0a1a] flex items-center justify-center px-4 overflow-hidden">
-
-            {/* Background Layer */}
             <div className="absolute inset-0 z-0">
-                <DotGrid
-                    baseColor="#2d233e"
-                    activeColor="#bb29ff"
-                    dotSize={2}
-                    gap={25}
-                />
+                <DotGrid baseColor="#2d233e" activeColor="#bb29ff" dotSize={2} gap={25} />
             </div>
 
             <div className="relative z-10 w-full max-w-sm fade-up">
-                {/* Logo & Header */}
                 <div className="flex flex-col items-center mb-8">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#bb29ff] to-[#2d233e] flex items-center justify-center shadow-[0_0_20px_rgba(187,41,255,0.3)] mb-4 border border-purple-500/20 group hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#bb29ff] to-[#2d233e] flex items-center justify-center shadow-[0_0_20px_rgba(187,41,255,0.3)] mb-4 border border-purple-500/20 hover:scale-110 transition-transform">
                         <Cpu size={32} className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
                     </div>
                     <h1 className="text-2xl font-bold text-white tracking-tight">System Designer</h1>
                     <p className="text-xs text-purple-400 uppercase tracking-widest mt-1">Architecture Assistant</p>
                 </div>
 
-                {/* Glass Card */}
                 <div className="bg-white/5 border border-white/10 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
                     <h2 className="text-xl font-bold text-white mb-6">Create account</h2>
 
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
-                            <label className="block text-xs font-medium text-gray-400 mb-1.5 ml-1">Name</label>
+                            <label className="block text-xs font-medium text-gray-400 mb-1.5 ml-1">Full Name</label>
                             <input
                                 type="text"
                                 placeholder="Alex Developer"
                                 className="w-full bg-[#1a1425]/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#bb29ff] transition-all"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 mb-1.5 ml-1">Username</label>
+                            <input
+                                type="text"
+                                placeholder="alexdev"
+                                className="w-full bg-[#1a1425]/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#bb29ff] transition-all"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -72,6 +77,7 @@ export default function Register() {
                                 className="w-full bg-[#1a1425]/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#bb29ff] transition-all"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -83,6 +89,7 @@ export default function Register() {
                                 className="w-full bg-[#1a1425]/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#bb29ff] transition-all"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -108,7 +115,6 @@ export default function Register() {
                 </div>
             </div>
 
-            {/* Subtle Footer Decor */}
             <div className="absolute bottom-6 text-[10px] text-gray-700 tracking-[0.3em] uppercase">
                 Secure Authentication Node
             </div>
