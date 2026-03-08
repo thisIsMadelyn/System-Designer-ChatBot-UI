@@ -22,7 +22,7 @@ export default function ProjectDashboard() {
     const { projectId } = useParams();
     const { projects, bumpDesignCount } = useProjectStore();
     const { initSession } = useChatStore();
-    const project = projects.find((p) => p.id === projectId);
+    const project = projects.find((p) => String(p.id) === String(projectId));
 
     const sessionId = `session-${projectId}`;
     const { messages, loading, sendMessage, submitDesignForm, clear } = useChat(sessionId);

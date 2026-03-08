@@ -1,23 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "../store/projectStore";
 import DotGrid from "../components/DotGrid";
-import Navbar from "../components/Navbar"; // Βεβαιώσου ότι ο Navbar είναι επίσης Dark πλέον
+import Navbar from "../components/Navbar";
 import { format } from "date-fns";
-import { Plus, Folder, Trash2, Layout, Clock } from "lucide-react";
+import { Plus, Folder, Trash2, Layout, Clock, Loader } from "lucide-react";
 
 function NewProjectModal({ onClose, onCreate }) {
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleCreate = async () => {
+        if (!name.trim()) return;
+        setLoading(true);
+        await onCreate(name, desc);
+        setLoading(false);
+    };
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 px-4">
             <div className="bg-[#1a1425] rounded-3xl border border-white/10 p-8 w-full max-w-md shadow-2xl fade-up relative overflow-hidden">
-                {/* Glow effect inside modal */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#bb29ff]/10 blur-[60px] rounded-full"></div>
-
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#bb29ff]/10 blur-[60px] rounded-full" />
                 <h2 className="text-2xl font-bold text-white mb-6">New Project</h2>
-
                 <div className="space-y-5 relative z-10">
                     <div>
                         <label className="text-xs font-bold uppercase tracking-widest text-purple-400 mb-2 block">Project Name</label>
@@ -39,17 +44,16 @@ function NewProjectModal({ onClose, onCreate }) {
                         />
                     </div>
                 </div>
-
                 <div className="flex gap-3 mt-8 relative z-10">
                     <button onClick={onClose} className="flex-1 py-3 rounded-xl border border-white/10 text-gray-400 hover:bg-white/5 transition-all">
                         Cancel
                     </button>
                     <button
-                        onClick={() => { if (name.trim()) onCreate(name, desc); }}
-                        className="flex-1 py-3 rounded-xl bg-[#bb29ff] text-white font-bold shadow-[0_0_20px_rgba(187,41,255,0.3)] disabled:opacity-50 transition-all"
-                        disabled={!name.trim()}
+                        onClick={handleCreate}
+                        disabled={!name.trim() || loading}
+                        className="flex-1 py-3 rounded-xl bg-[#bb29ff] text-white font-bold shadow-[0_0_20px_rgba(187,41,255,0.3)] disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                     >
-                        Create Project
+                        {loading ? <><Loader size={16} className="animate-spin" /> Creating...</> : "Create Project"}
                     </button>
                 </div>
             </div>
@@ -58,19 +62,22 @@ function NewProjectModal({ onClose, onCreate }) {
 }
 
 export default function ProjectList() {
-    const { projects, addProject, deleteProject } = useProjectStore();
+    const { projects, loading, fetchProjects, addProject, deleteProject } = useProjectStore();
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
-    const handleCreate = (name, desc) => {
-        const p = addProject(name, desc);
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    const handleCreate = async (name, desc) => {
+        const p = await addProject(name, desc);
         setShowModal(false);
         navigate(`/projects/${p.id}`);
     };
 
     return (
         <div className="relative min-h-screen bg-[#0f0a1a] text-white overflow-hidden">
-            {/* Background Layer */}
             <div className="absolute inset-0 z-0 opacity-40">
                 <DotGrid baseColor="#2d233e" activeColor="#bb29ff" dotSize={2} gap={30} />
             </div>
@@ -78,7 +85,6 @@ export default function ProjectList() {
             <Navbar />
 
             <main className="relative z-10 max-w-5xl mx-auto px-6 py-12">
-                {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
                         <h1 className="text-4xl font-bold tracking-tight mb-2 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">
@@ -94,8 +100,11 @@ export default function ProjectList() {
                     </button>
                 </div>
 
-                {/* Project Grid */}
-                {projects.length === 0 ? (
+                {loading ? (
+                    <div className="flex items-center justify-center py-32">
+                        <Loader size={32} className="animate-spin text-[#bb29ff]" />
+                    </div>
+                ) : projects.length === 0 ? (
                     <div className="text-center py-32 bg-white/5 rounded-3xl border border-white/5 backdrop-blur-sm">
                         <p className="text-xl font-bold text-white mb-2">No projects active</p>
                         <p className="text-gray-500 max-w-xs mx-auto">Start a new project to generate requirements, ERDs, and API designs.</p>
@@ -119,10 +128,8 @@ export default function ProjectList() {
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
-
                                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#bb29ff] transition-colors">{p.name}</h3>
                                 <p className="text-sm text-gray-400 line-clamp-2 mb-6 h-10">{p.description || "System design and architecture flow."}</p>
-
                                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
                                     <div className="flex items-center gap-1.5 text-[#bb29ff] text-xs font-bold uppercase tracking-widest">
                                         <Layout size={14} />
@@ -130,7 +137,7 @@ export default function ProjectList() {
                                     </div>
                                     <div className="flex items-center gap-1.5 text-gray-500 text-[10px] font-medium uppercase tracking-wider">
                                         <Clock size={12} />
-                                        <span>{p.createdAt ? format(new Date(p.createdAt), "MMM d") : "New"}</span>
+                                        <span>{p.created_at ? format(new Date(p.created_at), "MMM d") : "New"}</span>
                                     </div>
                                 </div>
                             </div>
