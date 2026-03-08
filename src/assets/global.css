@@ -1,0 +1,94 @@
+/*@tailwind base;*/
+/*@tailwind components;*/
+/*@tailwind utilities;*/
+
+/*:root {*/
+/*    !* Fonts *!*/
+/*    font-family: 'DM Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+/*    line-height: 1.5;*/
+/*    font-weight: 400;*/
+
+/*    !* Colors based on Dot Grid (#2d233e & #bb29ff) *!*/
+/*    --bg: #0f0a1a;            !* Deep dark background *!*/
+/*    --surface: #1a1425;       !* Card/Dashboard surface *!*/
+/*    --surface-light: #2d233e; !* Secondary surface / Dot Grid Base *!*/
+/*    --primary: #bb29ff;       !* Active purple / Neon accent *!*/
+/*    --primary-glow: rgba(187, 41, 255, 0.3);*/
+
+/*    --text-main: #f8fafc;*/
+/*    --text-muted: #94a3b8;*/
+/*    --border: rgba(187, 41, 255, 0.1);*/
+
+/*    !* Rendering optimization *!*/
+/*    font-synthesis: none;*/
+/*    text-rendering: optimizeLegibility;*/
+/*    -webkit-font-smoothing: antialiased;*/
+/*    -moz-osx-font-smoothing: grayscale;*/
+/*}*/
+
+/** {*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*body {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    background-color: var(--bg);*/
+/*    color: var(--text-main);*/
+/*    min-height: 100vh;*/
+/*    width: 100vw;*/
+/*    overflow-x: hidden;*/
+/*}*/
+
+/*!* Links *!*/
+/*a {*/
+/*    font-weight: 500;*/
+/*    color: var(--primary);*/
+/*    text-decoration: inherit;*/
+/*    transition: opacity 0.2s;*/
+/*}*/
+/*a:hover {*/
+/*    opacity: 0.8;*/
+/*}*/
+
+/*!* Scrollbar Style *!*/
+/*::-webkit-scrollbar {*/
+/*    width: 6px;*/
+/*}*/
+/*::-webkit-scrollbar-track {*/
+/*    background: transparent;*/
+/*}*/
+/*::-webkit-scrollbar-thumb {*/
+/*    background: var(--surface-light);*/
+/*    border-radius: 10px;*/
+/*}*/
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: var(--primary);*/
+/*}*/
+
+/*!* Custom UI Classes *!*/
+/*.glass-panel {*/
+/*    background: rgba(26, 20, 37, 0.7);*/
+/*    backdrop-filter: blur(12px);*/
+/*    border: 1px solid var(--border);*/
+/*    border-radius: 1rem;*/
+/*}*/
+
+/*!* Animations *!*/
+/*@keyframes fadeUp {*/
+/*    from { opacity: 0; transform: translateY(10px); }*/
+/*    to   { opacity: 1; transform: translateY(0); }*/
+/*}*/
+
+/*@keyframes bounce {*/
+/*    0%, 60%, 100% { transform: translateY(0); opacity: .4; }*/
+/*    30%           { transform: translateY(-6px); opacity: 1; }*/
+/*}*/
+
+/*.fade-up {*/
+/*    animation: fadeUp 0.4s ease-out forwards;*/
+/*}*/
+
+/*.dot-pulse {*/
+/*    animation: bounce 1.2s infinite;*/
+/*}*/

@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --bg: #0f0a1a !important;
+    --primary: #bb29ff !important;
+    --surface: #1a1425 !important;
+    --text: #f8fafc !important;
+}
+
+/* Hard Reset */
+html, body, #root {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+    overflow-x: hidden;
+    display: block !important; /* Σκοτώνει το κεντράρισμα του Vite */
+}
+
+/* Animations για το Chatbot */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fadeUp 0.4s ease-out forwards; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #2d233e; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #bb29ff; }
