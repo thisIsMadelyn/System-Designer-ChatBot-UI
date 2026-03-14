@@ -8,7 +8,7 @@ import Sidebar from "../components/Sidebar";
 import DesignForm from "../components/DesignForm";
 import StructuredOutput from "../components/StructuredOutput";
 import MarginNotes from "../components/MarginNotes.jsx";
-import Chatwindow from "../components/ChatWindow";
+import Chatwindow from "../components/Chatwindow.jsx";
 import ImportantBox from "../components/ImportantBox";
 import DotGrid from "../components/DotGrid";
 import {
