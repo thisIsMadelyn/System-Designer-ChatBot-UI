@@ -1,5 +1,3 @@
-// frontend/src/pages/ProjectDashboard.jsx
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProjectStore } from "../store/projectStore";
@@ -10,7 +8,7 @@ import Sidebar from "../components/Sidebar";
 import DesignForm from "../components/DesignForm";
 import StructuredOutput from "../components/StructuredOutput";
 import MarginNotes from "../components/MarginNotes.jsx";
-import ChatWindow from "../components/ChatWindow";
+import Chatwindow from "../components/ChatWindow";
 import ImportantBox from "../components/ImportantBox";
 import DotGrid from "../components/DotGrid";
 import {
@@ -237,7 +235,7 @@ export default function ProjectDashboard() {
                         {/* ── CHAT TAB ── */}
                         {rightTab === "chat" && (
                             <div className="h-full">
-                                <ChatWindow
+                                <Chatwindow
                                     messages={messages}
                                     loading={loading}
                                     onSend={sendMessage}

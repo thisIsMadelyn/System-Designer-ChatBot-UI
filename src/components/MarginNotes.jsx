@@ -54,7 +54,7 @@ export default function MarginNotes({ projectId }) {
             {/* Header */}
             <div className="px-6 py-6 border-b border-white/5 bg-white/5">
                 <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Knowledge Base</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Margin Notes</h3>
                     <div className="flex items-center gap-1.5 bg-[#bb29ff]/20 px-2 py-0.5 rounded-full border border-[#bb29ff]/30 shadow-[0_0_10px_rgba(187,41,255,0.2)]">
                         <Star size={10} className="fill-[#bb29ff] text-[#bb29ff]" />
                         <span className="text-[10px] font-bold text-[#bb29ff]">{starred.length}</span>
